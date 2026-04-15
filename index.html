@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human vs AI: The Eye Test</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Debug/Testing Global Memory Tracker -->
+    <div id="debug-tracker" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); color: white; padding: 8px 12px; border-radius: 8px; font-size: 14px; z-index: 9999; font-weight: bold;">
+        Soal Terpakai: <span id="debug-count">0</span> / <span id="debug-total">...</span>
+    </div>
+
+    <div id="game-container">
+        
+        <!-- START SCREEN -->
+        <div id="start-screen" class="screen active">
+            <h1 class="title">Human vs AI<br><span class="subtitle">Image Guessing Game</span></h1>
+            <p class="description">Uji kejelian mata Anda!<br>Dapatkah Anda membedakan foto asli dengan buatan AI?</p>
+            <div class="rules-box">
+                <p><strong>🎯 Misi:</strong> Tebak foto <span class="highlight">MANUSIA ASLI</span></p>
+                <p><strong>🏆 Syarat Menang:</strong> 8 Kali Benar Berturut-turut</p>
+                <p><strong>⏳ Batas Waktu:</strong> 5 Detik per Soal</p>
+                <p><strong>💀 Peringatan:</strong> Salah tebak = Game Over!</p>
+            </div>
+            <button id="btn-start" class="btn primary-btn">Mulai Tantangan</button>
+        </div>
+
+        <!-- PLAY SCREEN -->
+        <div id="play-screen" class="screen">
+            <div class="header">
+                <h2>Cari Foto Asli!</h2>
+                <div class="streak-counter">
+                    Streak: <span id="streak-text">0 / 8</span>
+                </div>
+            </div>
+            
+            <div class="timer-container">
+                <div id="timer-bar"></div>
+            </div>
+
+            <div class="game-area">
+                <!-- Card Left -->
+                <div class="card" id="card-left" tabindex="0">
+                    <img id="img-left" src="" alt="Image 1">
+                    <div class="card-overlay" id="overlay-left">
+                        <svg class="check-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="vs-badge">VS</div>
+
+                <!-- Card Right -->
+                <div class="card" id="card-right" tabindex="0">
+                    <img id="img-right" src="" alt="Image 2">
+                    <div class="card-overlay" id="overlay-right">
+                        <svg class="check-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Pilih foto yang menurut Anda adalah <span class="highlight">FOTO ASLI</span></p>
+            </div>
+        </div>
+
+        <!-- GAME OVER SCREEN -->
+        <div id="game-over-screen" class="screen">
+            <h1 class="title loss-title">Game Over!</h1>
+            <p id="loss-reason" class="description">Anda terkecoh oleh AI!</p>
+            <div class="stats-box">
+                <p>Streak Tertinggi: <span id="final-streak" class="highlight">0</span></p>
+            </div>
+            <button id="btn-retry" class="btn primary-btn">Coba Lagi</button>
+        </div>
+
+        <!-- VICTORY SCREEN -->
+        <div id="victory-screen" class="screen">
+            <h1 class="title win-title">Luar Biasa!</h1>
+            <p class="description">Mata Anda tajam bak elang!<br>AI tidak bisa menipu Anda.</p>
+            <div class="stats-box win-box">
+                <p>Perfect Score: <span class="highlight">8 / 8</span></p>
+            </div>
+            <button id="btn-play-again" class="btn primary-btn">Main Sekali Lagi</button>
+        </div>
+
+    </div>
+
+    <!-- Audio Placeholders -->
+    <audio id="sfx-correct" src=""></audio>
+    <audio id="sfx-wrong" src=""></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
