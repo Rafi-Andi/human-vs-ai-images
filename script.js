@@ -5,7 +5,7 @@ let currentStreak = 0;
 let globalAvailableQuestions = [];
 let timer;
 let timeLeft = 7;
-const winTarget = 5;
+const winTarget = 7;
 const questionCount = 57;
 
 // Current Question Data
