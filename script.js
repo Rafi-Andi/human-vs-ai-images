@@ -1,9 +1,11 @@
 // State Management
+const maxLives = 2; // Ubah nilai ini untuk mengatur max nyawa keseluruhan
+let currentLives = maxLives;
 let currentStreak = 0;
 let globalAvailableQuestions = [];
 let timer;
-let timeLeft = 5;
-const winTarget = 8;
+let timeLeft = 7;
+const winTarget = 5;
 const questionCount = 57;
 
 // Current Question Data
@@ -19,6 +21,8 @@ const screens = {
 };
 
 const ui = {
+    ruleLives: document.getElementById('rule-lives'),
+    livesText: document.getElementById('lives-text'),
     streakText: document.getElementById('streak-text'),
     timerBar: document.getElementById('timer-bar'),
     imgLeft: document.getElementById('img-left'),
@@ -68,6 +72,10 @@ function updateDebugUI() {
 initGlobalQuestions();
 updateDebugUI();
 
+if (ui.ruleLives) {
+    ui.ruleLives.innerHTML = `<strong>❤️ Nyawa:</strong> Anda punya ${maxLives} kesempatan gagal!`;
+}
+
 // Preload next images (optional but good practice)
 function preloadImage(url) {
     const img = new Image();
@@ -91,9 +99,23 @@ function showScreen(screenName) {
 // Start Game
 function startGame() {
     currentStreak = 0;
+    currentLives = maxLives;
     updateStreakUI();
+    updateLivesUI();
     showScreen('play');
     loadNextQuestion();
+}
+
+function updateLivesUI() {
+    let hearts = '';
+    for (let i = 0; i < maxLives; i++) {
+        if (i < currentLives) {
+            hearts += '❤️';
+        } else {
+            hearts += '🖤';
+        }
+    }
+    ui.livesText.textContent = hearts;
 }
 
 // Update Streak
@@ -132,8 +154,8 @@ function loadNextQuestion() {
     ui.imgRight.src = (!isLeftHuman) ? humanImgUrl : aiImgUrl;
 
     // Reset Classes & Overlays
-    ui.cardLeft.classList.remove('correct', 'card-animate');
-    ui.cardRight.classList.remove('correct', 'card-animate');
+    ui.cardLeft.classList.remove('correct', 'wrong', 'card-animate');
+    ui.cardRight.classList.remove('correct', 'wrong', 'card-animate');
     
     // Trigger Reflow for animation
     void ui.cardLeft.offsetWidth; 
@@ -184,7 +206,7 @@ function startTimer() {
         if (timeLeft <= 0) {
             clearInterval(timer);
             ui.timerBar.style.width = '0%';
-            handleGameOver('Waktu Habis!');
+            handleMistake('Waktu Habis!', null);
         }
     }, 10);
 }
@@ -198,7 +220,7 @@ function selectCard(side) {
     if (side === currentCorrectSide) {
         handleCorrectAnswer(side);
     } else {
-        handleGameOver('Anda memilih gambar AI!');
+        handleMistake('Anda memilih gambar AI!', side);
     }
 }
 
@@ -228,19 +250,41 @@ function handleCorrectAnswer(side) {
     }, 1200);
 }
 
-function handleGameOver(reason) {
+function handleMistake(reason, side) {
     playSFX('wrong');
     isInteractionLocked = true;
+
+    // Tampilkan indikasi salah pada kartu yang dipilih
+    if (side) {
+        if (side === 'left') ui.cardLeft.classList.add('wrong');
+        else ui.cardRight.classList.add('wrong');
+    }
+
+    currentLives--;
+    updateLivesUI();
 
     // Shake Effect on Body
     document.body.classList.add('shake-danger');
     
-    setTimeout(() => {
-        document.body.classList.remove('shake-danger');
-        ui.lossReason.textContent = reason;
-        ui.finalStreak.textContent = currentStreak;
-        showScreen('gameOver');
-    }, 600);
+    if (currentLives <= 0) {
+        // Game Over jika nyawa habis
+        setTimeout(() => {
+            document.body.classList.remove('shake-danger');
+            ui.lossReason.textContent = reason;
+            ui.finalStreak.textContent = currentStreak;
+            showScreen('gameOver');
+        }, 1000);
+    } else {
+        // Reset streak karena telah membuat kesalahan (tidak urut lagi)
+        currentStreak = 0;
+        updateStreakUI();
+        
+        // Melanjutkan ke pertanyaan berikutnya setelah jeda sebentar
+        setTimeout(() => {
+            document.body.classList.remove('shake-danger');
+            loadNextQuestion();
+        }, 1200);
+    }
 }
 
 function triggerVictory() {

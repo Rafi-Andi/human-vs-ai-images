@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <!-- Debug/Testing Global Memory Tracker -->
     <div id="debug-tracker" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); color: white; padding: 8px 12px; border-radius: 8px; font-size: 14px; z-index: 9999; font-weight: bold;">
         Soal Terpakai: <span id="debug-count">0</span> / <span id="debug-total">...</span>
@@ -27,7 +26,7 @@
                 <p><strong>🎯 Misi:</strong> Tebak foto <span class="highlight">MANUSIA ASLI</span></p>
                 <p><strong>🏆 Syarat Menang:</strong> 8 Kali Benar Berturut-turut</p>
                 <p><strong>⏳ Batas Waktu:</strong> 5 Detik per Soal</p>
-                <p><strong>💀 Peringatan:</strong> Salah tebak = Game Over!</p>
+                <p id="rule-lives"><strong>❤️ Nyawa:</strong> Anda punya 2 kesempatan gagal!</p>
             </div>
             <button id="btn-start" class="btn primary-btn">Mulai Tantangan</button>
         </div>
@@ -36,8 +35,13 @@
         <div id="play-screen" class="screen">
             <div class="header">
                 <h2>Cari Foto Asli!</h2>
-                <div class="streak-counter">
-                    Streak: <span id="streak-text">0 / 8</span>
+                <div class="stats-container" style="display: flex; gap: 10px;">
+                    <div class="lives-counter" style="background-color: var(--clr-card-bg); padding: 8px 16px; border-radius: 20px; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-size: 1.1rem; border: 2px solid var(--clr-danger);">
+                        Nyawa: <span id="lives-text">❤️❤️</span>
+                    </div>
+                    <div class="streak-counter">
+                        Streak: <span id="streak-text">0 / 8</span>
+                    </div>
                 </div>
             </div>
             
@@ -54,6 +58,11 @@
                             <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                         </svg>
                     </div>
+                    <div class="card-overlay-wrong" id="overlay-left-wrong">
+                        <svg class="cross-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </div>
                 </div>
 
                 <div class="vs-badge">VS</div>
@@ -64,6 +73,11 @@
                     <div class="card-overlay" id="overlay-right">
                         <svg class="check-icon" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                    </div>
+                    <div class="card-overlay-wrong" id="overlay-right-wrong">
+                        <svg class="cross-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                         </svg>
                     </div>
                 </div>
@@ -82,14 +96,14 @@
                 <p>Streak Tertinggi: <span id="final-streak" class="highlight">0</span></p>
             </div>
             <button id="btn-retry" class="btn primary-btn">Coba Lagi</button>
-        </div>
+        </div> 
 
         <!-- VICTORY SCREEN -->
         <div id="victory-screen" class="screen">
             <h1 class="title win-title">Luar Biasa!</h1>
             <p class="description">Mata Anda tajam bak elang!<br>AI tidak bisa menipu Anda.</p>
             <div class="stats-box win-box">
-                <p>Perfect Score: <span class="highlight">8 / 8</span></p>
+                <p>Perfect Score: <span class="highlight">5 / 5</span></p>
             </div>
             <button id="btn-play-again" class="btn primary-btn">Main Sekali Lagi</button>
         </div>
