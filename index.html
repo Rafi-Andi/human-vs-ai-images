@@ -24,7 +24,7 @@
             <p class="description">Uji kejelian mata Anda!<br>Dapatkah Anda membedakan foto asli dengan buatan AI?</p>
             <div class="rules-box">
                 <p><strong>🎯 Misi:</strong> Tebak foto <span class="highlight">MANUSIA ASLI</span></p>
-                <p><strong>🏆 Syarat Menang:</strong> 8 Kali Benar Berturut-turut</p>
+                <p id="rule-target"><strong>🏆 Syarat Menang:</strong> Kumpulkan 5 Poin</p>
                 <p><strong>⏳ Batas Waktu:</strong> 5 Detik per Soal</p>
                 <p id="rule-lives"><strong>❤️ Nyawa:</strong> Anda punya 2 kesempatan gagal!</p>
             </div>
@@ -39,8 +39,8 @@
                     <div class="lives-counter" style="background-color: var(--clr-card-bg); padding: 8px 16px; border-radius: 20px; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-size: 1.1rem; border: 2px solid var(--clr-danger);">
                         Nyawa: <span id="lives-text">❤️❤️</span>
                     </div>
-                    <div class="streak-counter">
-                        Streak: <span id="streak-text">0 / 8</span>
+                    <div class="points-counter">
+                        Poin: <span id="points-text">0 / 5</span>
                     </div>
                 </div>
             </div>
@@ -93,7 +93,7 @@
             <h1 class="title loss-title">Game Over!</h1>
             <p id="loss-reason" class="description">Anda terkecoh oleh AI!</p>
             <div class="stats-box">
-                <p>Streak Tertinggi: <span id="final-streak" class="highlight">0</span></p>
+                <p>Total Poin: <span id="final-points" class="highlight">0</span></p>
             </div>
             <button id="btn-retry" class="btn primary-btn">Coba Lagi</button>
         </div> 
@@ -103,7 +103,7 @@
             <h1 class="title win-title">Luar Biasa!</h1>
             <p class="description">Mata Anda tajam bak elang!<br>AI tidak bisa menipu Anda.</p>
             <div class="stats-box win-box">
-                <p>Perfect Score: <span class="highlight">5 / 5</span></p>
+                <p>Perfect Score: <span class="highlight">7 / 7</span></p>
             </div>
             <button id="btn-play-again" class="btn primary-btn">Main Sekali Lagi</button>
         </div>

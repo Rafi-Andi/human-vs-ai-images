@@ -161,7 +161,7 @@ body.shake-danger {
     color: var(--clr-primary);
 }
 
-.streak-counter {
+.points-counter {
     background-color: var(--clr-card-bg);
     padding: 8px 16px;
     border-radius: 20px;

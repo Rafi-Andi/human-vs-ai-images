@@ -1,7 +1,7 @@
 // State Management
 const maxLives = 2; // Ubah nilai ini untuk mengatur max nyawa keseluruhan
 let currentLives = maxLives;
-let currentStreak = 0;
+let currentPoints = 0;
 let globalAvailableQuestions = [];
 let timer;
 let timeLeft = 7;
@@ -22,15 +22,15 @@ const screens = {
 
 const ui = {
     ruleLives: document.getElementById('rule-lives'),
+    pointsText: document.getElementById('points-text'),
     livesText: document.getElementById('lives-text'),
-    streakText: document.getElementById('streak-text'),
     timerBar: document.getElementById('timer-bar'),
     imgLeft: document.getElementById('img-left'),
     imgRight: document.getElementById('img-right'),
     cardLeft: document.getElementById('card-left'),
     cardRight: document.getElementById('card-right'),
     lossReason: document.getElementById('loss-reason'),
-    finalStreak: document.getElementById('final-streak'),
+    finalPoints: document.getElementById('final-points'),
     debugCount: document.getElementById('debug-count'),
     debugTotal: document.getElementById('debug-total')
 };
@@ -75,6 +75,10 @@ updateDebugUI();
 if (ui.ruleLives) {
     ui.ruleLives.innerHTML = `<strong>❤️ Nyawa:</strong> Anda punya ${maxLives} kesempatan gagal!`;
 }
+const ruleTarget = document.getElementById('rule-target');
+if (ruleTarget) {
+    ruleTarget.innerHTML = `<strong>🏆 Syarat Menang:</strong> Kumpulkan ${winTarget} Poin`;
+}
 
 // Preload next images (optional but good practice)
 function preloadImage(url) {
@@ -98,9 +102,9 @@ function showScreen(screenName) {
 
 // Start Game
 function startGame() {
-    currentStreak = 0;
+    currentPoints = 0;
     currentLives = maxLives;
-    updateStreakUI();
+    updatePointsUI();
     updateLivesUI();
     showScreen('play');
     loadNextQuestion();
@@ -118,14 +122,14 @@ function updateLivesUI() {
     ui.livesText.textContent = hearts;
 }
 
-// Update Streak
-function updateStreakUI() {
-    ui.streakText.textContent = `${currentStreak} / ${winTarget}`;
+// Update Points
+function updatePointsUI() {
+    ui.pointsText.textContent = `${currentPoints} / ${winTarget}`;
 }
 
 // Load Question
 function loadNextQuestion() {
-    if (currentStreak >= winTarget) {
+    if (currentPoints >= winTarget) {
         triggerVictory();
         return;
     }
@@ -231,8 +235,8 @@ function handleCorrectAnswer(side) {
     if (side === 'left') ui.cardLeft.classList.add('correct');
     else ui.cardRight.classList.add('correct');
 
-    currentStreak++;
-    updateStreakUI();
+    currentPoints++;
+    updatePointsUI();
 
     // Trigger Confetti
     if (typeof confetti !== 'undefined') {
@@ -271,14 +275,10 @@ function handleMistake(reason, side) {
         setTimeout(() => {
             document.body.classList.remove('shake-danger');
             ui.lossReason.textContent = reason;
-            ui.finalStreak.textContent = currentStreak;
+            ui.finalPoints.textContent = currentPoints;
             showScreen('gameOver');
         }, 1000);
     } else {
-        // Reset streak karena telah membuat kesalahan (tidak urut lagi)
-        currentStreak = 0;
-        updateStreakUI();
-        
         // Melanjutkan ke pertanyaan berikutnya setelah jeda sebentar
         setTimeout(() => {
             document.body.classList.remove('shake-danger');
